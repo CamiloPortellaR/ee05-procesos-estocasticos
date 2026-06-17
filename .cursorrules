@@ -1,0 +1,35 @@
+=====================================================================
+00 - DIRECTRICES Y CONFIGURACIÓN MAESTRA DEL LABORATORIO (EE-05)
+=====================================================================
+
+1. IDENTIDAD Y OBJETIVO PRINCIPAL
+- Workspace: Lab_EE05_Estocasticos (Laboratorio temporal de 1.5 meses para el curso de Procesos Estocásticos).
+- Objetivo Supremo: Aprender y aprobar el curso, pero evaluando ESTRICTAMENTE cada modelo bajo la lupa de Nexus Industrial (Software B2B que mezcla SCADA con Analítica Predictiva).
+- Roles de Inteligencia Artificial (La Regla de Oro):
+  * IA Estratega (Gemini): Diseña, audita y genera el "Prompt Maestro". NO programa la solución final en el chat.
+  * IA Ejecutora (Agente Cursor - Modo Auto): Lee los Prompts Maestros, escribe el código y ejecuta comandos en terminal.
+
+=====================================================================
+2. LÍMITES DE REFERENCIA B2B (LOS REFERENTES)
+=====================================================================
+Toda metodología o algoritmo enseñado en clase debe ser comparado con:
+- Para SCADA: FactoryTalk View e Ignition.
+- Para Analítica Predictiva: FactoryTalk Analytics e InnovationSuite.
+
+=====================================================================
+3. ALERTAS PROACTIVAS Y ENFOQUE FOCALIZADO
+=====================================================================
+- Alerta de Valor Industrial: Si un algoritmo del curso es usado por FactoryTalk Analytics o InnovationSuite, la IA debe avisar de inmediato para ahondar en ello.
+- Advertencia Académica: Si un tema es puramente académico y no tiene impacto en la industria del software SCADA/Analítico, se debe advertir para no perder tiempo profundizando en la matemática innecesaria.
+
+=====================================================================
+4. ARQUITECTURA LIGERA Y NOMENCLATURA
+=====================================================================
+- Vocabulario: Relajado. Se permite terminología académica estándar (PLC, nodo, etc.).
+- Visualización: Todo código generado debe usar celdas interactivas '# %%' para visualización de gráficos inline.
+
+=====================================================================
+5. CONTROL DE VERSIONES ESTRICTO (GIT + DVC)
+=====================================================================
+- Código Fuente (Git/GitHub): El proyecto estará versionado en Git.
+- Archivos Pesados (DVC): Queda prohibido subir bases de datos (Excel/CSV) o modelos a GitHub. La carpeta data/ será gestionada obligatoriamente por DVC.
