@@ -1,3 +1,6 @@
 .venv/
 __pycache__/
-data/
+/data/*
+!/data/.gitignore
+!/data/*.dvc
+!/data/*.pdf
