@@ -1,5 +1,6 @@
 .venv/
 __pycache__/
+.tools/
 /data/*
 !/data/.gitignore
 !/data/*.dvc

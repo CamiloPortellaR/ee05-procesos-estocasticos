@@ -1,0 +1,7 @@
+pandas
+matplotlib
+statsmodels
+openpyxl
+numpy
+ipykernel
+dvc[gdrive]

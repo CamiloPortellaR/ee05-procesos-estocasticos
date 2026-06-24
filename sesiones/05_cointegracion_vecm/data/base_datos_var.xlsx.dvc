@@ -1,0 +1,5 @@
+outs:
+- md5: a74cc89563085d51e7248fde8f6746ad
+  size: 11295
+  hash: md5
+  path: base_datos_var.xlsx
