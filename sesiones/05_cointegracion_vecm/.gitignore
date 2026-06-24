@@ -1,3 +1,4 @@
 /data/*
 !/data/.gitignore
 !/data/*.dvc
+/graficos

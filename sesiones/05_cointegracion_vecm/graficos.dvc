@@ -1,0 +1,6 @@
+outs:
+- md5: 5c8aa476b3d03ce9c8d2bc56658fd44b.dir
+  size: 4286140
+  nfiles: 27
+  hash: md5
+  path: graficos
