@@ -1,0 +1,1 @@
+# Los binarios de data/ se registran con DVC; Git solo trackea *.dvc
