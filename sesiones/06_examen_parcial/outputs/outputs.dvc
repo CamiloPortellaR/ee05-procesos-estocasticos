@@ -11,11 +11,11 @@ outs:
   size: 146987
   hash: md5
   path: l4_pronostico_var_vs_vecm.png
-- md5: a472097d11701af05454f5a7f7c7c059
-  size: 559852
+- md5: 9c77a1a5ffe32c2f2b6fe501e72f7d03
+  size: 559858
   hash: md5
   path: resolucion_examen.docx
-- md5: 7097c9af330d3a591b3402845b41deba
-  size: 759411
+- md5: 16831fca93173aef28c20a6cfe4ccf3c
+  size: 759425
   hash: md5
   path: resolucion_examen.pdf

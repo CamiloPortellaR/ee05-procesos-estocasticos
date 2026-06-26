@@ -141,7 +141,7 @@ Base de datos: `data/base_datos_var.xlsx` — 100 observaciones mensuales (`MS`)
 
 Se cargó el Excel, se configuró índice temporal mensual y se generó el gráfico de series superpuestas.
 
-![Series temporales superpuestas](outputs/l1_series_temporales.png)
+![Series temporales superpuestas](../outputs/l1_series_temporales.png)
 
 **Matriz de correlaciones estimada:**
 
@@ -233,7 +233,7 @@ print("Estable:", np.all(np.abs(raices) < 1))
 
 Sobre el **VAR(2)** estimado en L2, se calcularon las FIR ortogonalizadas con descomposición de Cholesky de $\Sigma$ (orden de variables: frecuencia → potencia activa → potencia reactiva).
 
-![FIR ortogonalizadas — matriz 3×3](outputs/l3_fir_matriz_ortogonalizada.png)
+![FIR ortogonalizadas — matriz 3×3](../outputs/l3_fir_matriz_ortogonalizada.png)
 
 #### b) Matriz de gráficos 3×3
 
@@ -306,7 +306,7 @@ Se reservaron las **últimas 12 observaciones** como conjunto de prueba. Se rees
 | P. Reactiva | 1,017 | **1,002** |
 | **Promedio global** | **0,614** | 0,630 |
 
-![Pronóstico VAR vs VECM (12 meses)](outputs/l4_pronostico_var_vs_vecm.png)
+![Pronóstico VAR vs VECM (12 meses)](../outputs/l4_pronostico_var_vs_vecm.png)
 
 **Conclusión:** El **VAR sin restricciones** presenta menor RMSE medio global (0,614 vs 0,630). Sin embargo, el **VECM mejora el pronóstico de frecuencia** (0,131 vs 0,151), lo cual es coherente con que impone equilibrio de largo plazo entre variables acopladas. El VAR gana en potencia activa al no restringir la dinámica de largo plazo. En operación SCADA/analítica, la elección depende de la variable objetivo: si el foco es **frecuencia**, el VECM aporta valor; si se busca error global mínimo en las tres series, el VAR es preferible en esta muestra.
 
@@ -336,7 +336,7 @@ rmse_vecm = np.sqrt(np.mean((test.values - pron_vecm) ** 2, axis=0))
 
 ### Código completo de referencia
 
-Ver: `scripts/resolucion_laboratorio.py`
+Ver: `../scripts/resolucion_laboratorio.py`
 
 ---
 
