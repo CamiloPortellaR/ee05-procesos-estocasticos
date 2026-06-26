@@ -1,5 +1,5 @@
 /data/*
 !/data/.gitignore
 !/data/*.dvc
-/outputs
-/Examen_Parcial_Procesos_Estocásticos___UPG_FIEE_2026_1.pdf
+/outputs/*
+!/outputs/*.dvc
