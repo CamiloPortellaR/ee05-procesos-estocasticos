@@ -1,6 +1,13 @@
 outs:
-- md5: c22b2d486a769495c0a231c8ec6f75d4.dir
-  size: 391348
-  nfiles: 4
+- md5: 67e6611e974c1ed2491248730ba7c711
+  size: 104802
   hash: md5
-  path: .
+  path: l1_series_temporales.png
+- md5: 85719b4034a8531700f67e8dc879d801
+  size: 112486
+  hash: md5
+  path: resolucion_examen.docx
+- md5: 0a031abb35931efbd8337b3b4114ddcc
+  size: 173961
+  hash: md5
+  path: resolucion_examen.pdf
