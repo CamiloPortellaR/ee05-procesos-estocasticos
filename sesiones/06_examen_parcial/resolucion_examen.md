@@ -77,7 +77,7 @@ $$A_1 = \begin{bmatrix} 0{,}6 & -0{,}2 & 0{,}1 \\ 0{,}1 & 0{,}8 & -0{,}1 \\ 0{,}
 
 **i) Estabilidad:** Los autovalores son $\lambda \approx 0{,}7 \pm 0{,}14j$ y $\lambda_3 = 0{,}7$. Todos cumplen $|\lambda_i|<1$, por lo tanto el VAR(1) es **estable**.
 
-**ii) Efecto de $P_{t-1}$ sobre $f_t$:** El coeficiente $A_1(1,2)=0{,}1>0$. Un aumento en potencia activa pasada se asocia con un incremento en frecuencia actual (controlando por los demás rezagos del sistema). Físicamente, refleja acoplamiento dinámico entre balance de potencia activa y dinámica de frecuencia del sistema.
+**ii) Efecto de $P_{t-1}$ sobre $f_t$:** El coeficiente $A_1(1,2)=-0{,}2<0$. Un aumento en potencia activa pasada se asocia con una **disminución** en frecuencia actual (controlando por los demás rezagos del sistema). Físicamente, refleja el acoplamiento dinámico del balance potencia–frecuencia: mayor demanda de potencia activa tiende a reducir la frecuencia si no hay compensación inmediata de generación.
 
 **iii) Cholesky:** Como $\Sigma$ no es diagonal, los shocks contemporáneos están correlacionados. La descomposición $\Sigma = PP'$ define shocks ortogonalizados $u_t = P^{-1}\varepsilon_t$ y FIR ortogonalizadas $\Theta_h = \Psi_h P$, aislando el efecto de una variable sin contaminación simultánea de las demás.
 
@@ -105,9 +105,9 @@ Si dos nodos distantes pierden cointegración en frecuencia, el equilibrio diná
 
 | Criterio | Fórmula | Balance | Interpretación |
 |---|---|---|---|
-| **AIC** | $2k - 2\ln(L)$ | Ajuste vs. parsimonia (penalización moderada) | Menor AIC → mejor modelo |
-| **BIC** | $k\ln(n) - 2\ln(L)$ | Penalización creciente con $n$ y $k$ | Favorece modelos más simples que AIC |
-| **MAPE** | $\frac{100}{n}\sum\left|\frac{Y_i-\hat Y_i}{Y_i}\right|$ | Error de pronóstico relativo | Menor MAPE → mejor capacidad predictiva |
+| **AIC** | $2k - 2\ln(L)$ | Verosimilitud vs. complejidad (penaliza cada parámetro con $2$) | Al comparar modelos estimados sobre **los mismos datos**: **menor AIC → mejor modelo** (mayor ajuste sin sobreparametrizar en exceso). No tiene sentido interpretar el valor absoluto; solo el **orden relativo** entre candidatos. |
+| **BIC** | $k\ln(n) - 2\ln(L)$ | Verosimilitud vs. complejidad (penaliza cada parámetro con $\ln(n)$) | Al comparar modelos sobre **los mismos datos**: **menor BIC → mejor modelo**. La penalización crece con el tamaño muestral $n$, por lo que, con $n$ grande, BIC suele elegir **menos parámetros** que AIC ante el mismo conjunto de candidatos. |
+| **MAPE** | $\frac{100}{n}\sum\left|\frac{Y_i-\hat Y_i}{Y_i}\right|$ | Error de pronóstico relativo (%) | **Menor MAPE → mejor capacidad predictiva** (menor error porcentual medio entre observado y pronosticado). |
 
 #### b) Interpretación FIR potencia-frecuencia (4 puntos)
 
@@ -227,9 +227,110 @@ print("Estable:", np.all(np.abs(raices) < 1))
 
 ---
 
-### Nota sobre L3 y L4
+### L3 (10 %) — Función Impulso-Respuesta (FIR)
 
-Los requerimientos L3 (FIR ortogonalizadas) y L4 (Johansen, VECM, pronóstico) se desarrollan en la sesión 04 (`04_vectores_autorregresivos`) y sesión 05 (`05_cointegracion_vecm`) del laboratorio EE-05. Dada la **inestabilidad** del VAR(2) sobre esta muestra, se recomienda diferenciar o restringir el modelo antes de FIR y VECM en un análisis operativo.
+#### a) FIR ortogonalizadas (20 periodos, Cholesky)
+
+Sobre el **VAR(2)** estimado en L2, se calcularon las FIR ortogonalizadas con descomposición de Cholesky de $\Sigma$ (orden de variables: frecuencia → potencia activa → potencia reactiva).
+
+![FIR ortogonalizadas — matriz 3×3](outputs/l3_fir_matriz_ortogonalizada.png)
+
+#### b) Matriz de gráficos 3×3
+
+La figura anterior muestra la respuesta de cada variable (filas) ante un shock unitario ortogonalizado en cada variable (columnas), para $h=0,1,\ldots,20$.
+
+#### c) Interpretación: shock en potencia activa sobre frecuencia
+
+Respuesta de $f_t$ ante shock en $P_t$ (FIR ortogonalizada, variable respuesta = frecuencia, shock = P. Activa):
+
+| Horizonte $h$ | Respuesta |
+|---:|---:|
+| 0 | 0,000 |
+| 1 | $-0{,}052$ |
+| 5 | $-0{,}110$ |
+| 10 | $-0{,}078$ |
+| 20 | $-0{,}027$ |
+
+**Conclusión:** El efecto es **negativo** (mayor potencia activa pasada/shock se traduce en menor frecuencia en el corto plazo). La respuesta es **transitoria**: se intensifica en los primeros periodos (máximo alrededor de $h=5$) y luego decae hacia cero, sin comportamiento explosivo persistente.
+
+**Nota metodológica:** El VAR(2) de L2 es **inestable** ($|\lambda|>1$ en algunas raíces). Las FIR se reportan como requerimiento del examen, pero en un análisis operativo convendría reestimar sobre datos estacionarios o con restricciones.
+
+#### Código L3
+
+```python
+# %% L3 — FIR ortogonalizadas
+irf = resultado_var.irf(20)
+fig = irf.plot(orth=True, figsize=(14, 10))
+fig.savefig(RUTA_OUTPUTS / "l3_fir_matriz_ortogonalizada.png", dpi=150, bbox_inches="tight")
+
+orth = irf.orth_irfs
+respuesta_f_a_shock_p = orth[:, 0, 1]  # fila=frecuencia, shock=P. Activa
+```
+
+---
+
+### L4 (12 %) — Cointegración y VECM
+
+#### a) Test de Johansen (estadístico de traza)
+
+Parámetro de rezagos en diferencias: $k_{\Delta}=1$ (equivalente a $p-1$ del VAR(2)).
+
+| Hipótesis nula | Estadístico traza | Valor crítico 5 % | Decisión (5 %) |
+|---|---:|---:|---|
+| $r \leq 0$ | 795,45 | 29,80 | Rechazar |
+| $r \leq 1$ | 51,13 | 15,49 | Rechazar |
+| $r \leq 2$ | 5,90 | 3,84 | Rechazar |
+
+**Rango de cointegración según traza (5 %):** $r = 3$.
+
+Con $K=3$ variables, $r=3$ implica que el test detecta el máximo de relaciones posibles; en la práctica se interpreta la **relación principal** mediante el primer vector de cointegración.
+
+#### b) VECM y vector de cointegración normalizado
+
+Se estimó un **VECM** con $r=2$ (máximo no degenerado para $K=3$) y $k_{\Delta}=1$.
+
+**Primer vector de cointegración (Johansen, normalizado en frecuencia):**
+
+$$\beta' Y_t \approx f_t + 0{,}681\,P_t + 0{,}085\,Q_t$$
+
+**Interpretación en sistema de potencia:** Existe una combinación lineal de frecuencia, potencia activa y potencia reactiva que es estacionaria (equilibrio de largo plazo). Las tres magnitudes eléctricas no divergen de forma independiente: un desvío del equilibrio $(f,P,Q)$ genera fuerzas de corrección vía los coeficientes de ajuste $\alpha$ del VECM (la frecuencia presenta velocidad de ajuste significativa: $\alpha_{f,ec1} \approx -0{,}15$).
+
+#### c) Pronóstico a 12 pasos: VAR vs VECM
+
+Se reservaron las **últimas 12 observaciones** como conjunto de prueba. Se reestimaron VAR(2) y VECM($r=2$) sobre el resto y se comparó el RMSE.
+
+| Variable | RMSE VAR | RMSE VECM |
+|---|---:|---:|
+| Frecuencia | 0,151 | **0,131** |
+| P. Activa | **0,675** | 0,755 |
+| P. Reactiva | 1,017 | **1,002** |
+| **Promedio global** | **0,614** | 0,630 |
+
+![Pronóstico VAR vs VECM (12 meses)](outputs/l4_pronostico_var_vs_vecm.png)
+
+**Conclusión:** El **VAR sin restricciones** presenta menor RMSE medio global (0,614 vs 0,630). Sin embargo, el **VECM mejora el pronóstico de frecuencia** (0,131 vs 0,151), lo cual es coherente con que impone equilibrio de largo plazo entre variables acopladas. El VAR gana en potencia activa al no restringir la dinámica de largo plazo. En operación SCADA/analítica, la elección depende de la variable objetivo: si el foco es **frecuencia**, el VECM aporta valor; si se busca error global mínimo en las tres series, el VAR es preferible en esta muestra.
+
+#### Código L4
+
+```python
+# %% L4 — Johansen, VECM y pronóstico
+from statsmodels.tsa.vector_ar.vecm import VECM, coint_johansen
+
+k_ar_diff = max(p_aic - 1, 1)
+johansen = coint_johansen(datos_var.values, det_order=0, k_ar_diff=k_ar_diff)
+r_traza = sum(johansen.lr1[i] > johansen.cvt[i, 1] for i in range(3))
+
+beta = johansen.evec[:, 0].real
+beta /= beta[0]
+
+vecm_res = VECM(datos_var, k_ar_diff=k_ar_diff, coint_rank=2, deterministic="ci").fit()
+
+train, test = datos_var.iloc[:-12], datos_var.iloc[-12:]
+pron_var = VAR(train).fit(p_aic).forecast(train.values[-p_aic:], steps=12)
+pron_vecm = VECM(train, k_ar_diff=k_ar_diff, coint_rank=2, deterministic="ci").fit().predict(steps=12)
+rmse_var = np.sqrt(np.mean((test.values - pron_var) ** 2, axis=0))
+rmse_vecm = np.sqrt(np.mean((test.values - pron_vecm) ** 2, axis=0))
+```
 
 ---
 

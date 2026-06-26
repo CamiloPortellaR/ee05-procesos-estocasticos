@@ -3,11 +3,19 @@ outs:
   size: 104802
   hash: md5
   path: l1_series_temporales.png
-- md5: 85719b4034a8531700f67e8dc879d801
-  size: 112486
+- md5: e406b7771d4dd052f78091864ea9c910
+  size: 347490
+  hash: md5
+  path: l3_fir_matriz_ortogonalizada.png
+- md5: 2591c46c21b920bf95b366463bba18ee
+  size: 146987
+  hash: md5
+  path: l4_pronostico_var_vs_vecm.png
+- md5: a472097d11701af05454f5a7f7c7c059
+  size: 559852
   hash: md5
   path: resolucion_examen.docx
-- md5: 0a031abb35931efbd8337b3b4114ddcc
-  size: 173961
+- md5: 7097c9af330d3a591b3402845b41deba
+  size: 759411
   hash: md5
   path: resolucion_examen.pdf
